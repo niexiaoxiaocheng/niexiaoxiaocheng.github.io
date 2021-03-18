@@ -493,14 +493,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    571
+                    932
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
 
@@ -579,6 +579,46 @@ start iexplore -k https://niexiaoxiaocheng.github.io/
 <li><p>解决方案：创建<code>bat</code>脚本，让应用程序最小化启动。</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">start /d <span class="token string">"C:\华宇常用软件\CameraServer版本2.19.11.5\CameraServer版本2.19.11.5\CameraServer2.19.11.4_x64"</span> /MIN 启动守护进程.exe <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ul>
+<h3 id="三、静默打印（不弹预览框）"><a href="#三、静默打印（不弹预览框）" class="headerlink" title="三、静默打印（不弹预览框）"></a>三、静默打印（不弹预览框）</h3><h4 id="1-Chrome-静默打印"><a href="#1-Chrome-静默打印" class="headerlink" title="1.Chrome 静默打印"></a>1.<code>Chrome</code> 静默打印</h4><ul>
+<li>在地址栏敲: about:flags ,打开设置界面:搜索<code>Enable New Print Preview UI layout</code> 设置为<code>Disable</code>，如果不存在该设置可忽略。</li>
+<li><code>Chrome</code>浏览器静默打印，右键打开属性，目标 后面追加<code>--kiosk-printing</code> </li>
+</ul>
+<blockquote>
+<p>Chrome 虽然是静默打印，但是还是会快速弹一下预览框，然后自动消失。</p>
+</blockquote>
+<h4 id="2-IE-静默打印"><a href="#2-IE-静默打印" class="headerlink" title="2.IE 静默打印"></a>2.IE 静默打印</h4><blockquote>
+<p>IE 实现静默打印比较困难，网上说的一些方式自己尝试没有效果，这里使用第三方插件<br><a target="_blank" rel="noopener" href="http://www.lodop.net/"><code>lodop</code></a>打印插件来实现。（免费版不支持静默打印且打印会有水印）。</p>
+</blockquote>
+<p>:<span class="github-emoji"><span>🍎</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f34e.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <code>lodop</code>集成：</p>
+<p>​    1):下载<code>LodopFuncs.js</code>到项目路径下。</p>
+<p>​    2):<code>html</code>中引入<code>LodopFuncs.js</code>。</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">th:</span>src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@{/js/print/LodopFuncs.js}<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>​    3):打印方法代码</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function-variable function">toHtmlAndPrint</span><span class="token operator">:</span>  <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">var</span> <span class="token constant">LODOP</span><span class="token operator">=</span><span class="token function">getLodop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//打印初始化</span>
+    <span class="token constant">LODOP</span><span class="token punctuation">.</span><span class="token constant">PRINT_INIT</span><span class="token punctuation">(</span><span class="token string">"guest list"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//这里可以打印HTML,页面URL ,iframe 等   打印PDF 需要使用pdf.js转成图片再打印</span>
+    <span class="token keyword">var</span>  strHtml<span class="token operator">=</span>document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>innerHTML<span class="token punctuation">;</span>
+    <span class="token constant">LODOP</span><span class="token punctuation">.</span><span class="token constant">ADD_PRINT_HTM</span><span class="token punctuation">(</span><span class="token string">'10mm'</span><span class="token punctuation">,</span><span class="token string">'18mm'</span><span class="token punctuation">,</span><span class="token string">"RightMargin:10mm"</span><span class="token punctuation">,</span><span class="token string">"BottomMargin:10mm"</span><span class="token punctuation">,</span>strHtml<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//设置对后台打印状态进行捕获 </span>
+    <span class="token constant">LODOP</span><span class="token punctuation">.</span><span class="token constant">SET_PRINT_MODE</span><span class="token punctuation">(</span><span class="token string">"CATCH_PAGE_PERCENT"</span><span class="token punctuation">,</span><span class="token string">"100%"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//设置Licenses</span>
+    <span class="token constant">LODOP</span><span class="token punctuation">.</span><span class="token constant">SET_LICENSES</span><span class="token punctuation">(</span><span class="token string">"XXXX软件股份有限公司"</span><span class="token punctuation">,</span><span class="token string">"XXXXXXXXXXXXXXXXXX"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//打印</span>
+    <span class="token comment">//打印控件在某些低配置机器上可能存在还没初始化完就开始执行打印操作的情况，会造成假死情况，所以延迟打印</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> _this<span class="token operator">=</span><span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token constant">LODOP</span><span class="token punctuation">.</span><span class="token constant">PRINT</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+           <span class="token comment">//TODO: Do something</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 
                 
             </div>
@@ -818,18 +858,17 @@ start iexplore -k https://niexiaoxiaocheng.github.io/
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/03/06/zi-zhu-zhong-duan-yi-ti-ji-gua-pei-chang-jian-wen-ti/">
+                <a href="/2021/03/18/java-yuan-cheng-diao-shi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="自助终端一体机适配常见问题">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Java远程调试">
                         
-                        <span class="card-title">自助终端一体机适配常见问题</span>
+                        <span class="card-title">Java远程调试</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -839,31 +878,30 @@ start iexplore -k https://niexiaoxiaocheng.github.io/
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-06
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-18
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E9%80%9A%E7%94%A8/" class="post-category">
-                                    通用
+                            <a href="/categories/%E5%BC%80%E5%8F%91/" class="post-category">
+                                    开发
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E4%B8%80%E4%BD%93%E6%9C%BA/">
-                        <span class="chip bg-color">一体机</span>
+                    <a href="/tags/%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95/">
+                        <span class="chip bg-color">远程调试</span>
                     </a>
                     
-                    <a href="/tags/%E8%A7%A6%E6%91%B8%E5%B1%8F/">
-                        <span class="chip bg-color">触摸屏</span>
+                    <a href="/tags/%E9%80%9A%E7%94%A8/">
+                        <span class="chip bg-color">通用</span>
                     </a>
                     
                 </div>
@@ -1103,7 +1141,7 @@ start iexplore -k https://niexiaoxiaocheng.github.io/
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">2.5k</span>&nbsp;字
+                class="white-color">3.5k</span>&nbsp;字
             
             
             
